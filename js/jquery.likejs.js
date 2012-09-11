@@ -2,28 +2,6 @@
 author: Lazaro Fernandes Lima
 blog: www.lazarolima.com.br
 linkedin: http://br.linkedin.com/in/lazaroflima
-
-
-usage:
-<!--
-data-likeid:    Defines an unique identifier that represents the like object
-data-likes:     Number of likes (for a better performance, this attribute does not be omitted)
-data-enjoyed:   If current user enjoyed the object. Defines the behavior of appearance
--->
-<a class="like" data-likeid="d41d8cd98f00b204e9800998ecf8427e" data-likes="7" data-enjoyed="true"></a>
-<a class="like" data-likeid="2304" data-likes="1" data-enjoyed="false"></a>
-
-$(".like").likeJs();
-//
-$(".like").likeJs({
-css: "btn btn-mini",
-liketext: "I Like S2",
-unliketext: "not short anymore!",
-log: true,
-addlikeurl: "http://www.lazarolima.com.br/like",
-removelikeurl: "http://www.lazarolima.com.br/dislike"
-}); 
-
 */
 
 (function ($) {
@@ -76,23 +54,51 @@ removelikeurl: "http://www.lazarolima.com.br/dislike"
 
         base.changeclickhandler = function (handler) {
             base.$el.unbind("click");
-            base.$el.bind("click", handler);
+            if (handler)
+                base.$el.bind("click", handler);
         }
 
+        //base.options.addlikeurl response example
+        //data: { totallike: 10 }
         base.addLike = function (element) {
+            if (base.options.log) console.log("[click]--> addLike: on " + base.likeid);
             if (base.options.addlikeurl !== undefined && base.options.addlikeurl != "") {
-                //todo
-                base.changeclickhandler(base.removeLike);
-                if (base.options.log) console.log("[click]--> addLike: on " + base.likeid);
+                $.ajax({
+                    type: 'POST',
+                    url: base.options.addlikeurl,
+                    data: { likeid: base.likeid },
+                    success: function (data) {
+                        base.enjoyed = true;
+                        base.likes = data.totallike;
+                        base.setAppearance();
+                        if (base.options.log) console.log("[ajax post success]--> addLike: on " + base.likeid);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        if (base.options.log) console.log("[error]--> addLike: on " + base.likeid + " - textStatus: " + textStatus);
+                    }
+                });
+
             }
             else if (base.options.log) console.log("[error]--> addLike: 'base.options.addlikeurl' can not be null on " + base.likeid);
         };
 
         base.removeLike = function (element) {
+            if (base.options.log) console.log("[click]--> removeLike: on " + base.likeid);
             if (base.options.removelikeurl !== undefined && base.options.removelikeurl != "") {
-                //todo
-                base.changeclickhandler(base.addLike);
-                if (base.options.log) console.log("[click]--> removeLike: on " + base.likeid);
+                $.ajax({
+                    type: 'DELETE',
+                    url: base.options.removelikeurl,
+                    data: { likeid: base.likeid },
+                    success: function (data) {
+                        base.enjoyed = true;
+                        base.likes = data.totallike;
+                        base.setAppearance();
+                        if (base.options.log) console.log("[ajax post success]--> addLike: on " + base.likeid);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        if (base.options.log) console.log("[error]--> addLike: on " + base.likeid + " - textStatus: " + textStatus);
+                    }
+                });
             }
             else if (base.options.log) console.log("[error]--> removeLike: 'base.options.removelikeurl' can not be null on " + base.likeid);
         };
