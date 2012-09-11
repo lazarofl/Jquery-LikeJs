@@ -1,7 +1,6 @@
 #LikeJs
 ###JQuery plugin for a "social network like component"
 
-
 ##What elements are supported?
 - `<a>`
 - `<button>`
@@ -25,7 +24,8 @@ dataenjoyed:   If current user enjoyed the object. Defines the behavior of appea
 <button class="like" datalikeid="2304" datalikes="0" dataenjoyed="false"></button>
 ```
 
-Before that, you can initialize `likeJs` in all elements using a JQuery selector.
+
+After that, you can initialize the likeJs in all elements using a simple JQuery selector.
 
 ```javascript
 //basic options
