@@ -6,14 +6,16 @@
 
 #Usage
 
-<!--
-data-likeid:    Defines an unique identifier that represents the like object
-data-likes:     Number of likes (for a better performance, this attribute does not be omitted)
-data-enjoyed:   If current user enjoyed the object. Defines the behavior of appearance
--->
+
+###data attributes
+\<!--
+\datalikeid:    Defines an unique identifier that represents the like object
+\datalikes:     Number of likes (for a better performance, this attribute does not be omitted)
+\dataenjoyed:   If current user enjoyed the object. Defines the behavior of appearance
+\-->
 \<a class="like" data-likeid="d41d8cd98f00b204e9800998ecf8427e" data-likes="7" data-enjoyed="true"></a>
 \<br>
-\<a class="like" data-likeid="2304" data-likes="1" data-enjoyed="false"></a>
+\<button class="like" data-likeid="2304" data-likes="1" data-enjoyed="false"></button>
 
 ###basic options
 $(".like").likeJs({
