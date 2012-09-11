@@ -39,7 +39,7 @@ linkedin: http://br.linkedin.com/in/lazaroflima
                 return;
             }
 
-            var _liketext = base.enjoyed === 'true' ? base.options.unliketext : base.options.liketext;
+            var _liketext = (base.enjoyed === 'true' || base.enjoyed === true) ? base.options.unliketext : base.options.liketext;
             base.$el.text(_liketext + " (" + base.likes + ")");
         };
 
@@ -48,7 +48,7 @@ linkedin: http://br.linkedin.com/in/lazaroflima
                 return;
             }
 
-            var _handler = base.enjoyed === 'true' ? base.removeLike : base.addLike;
+            var _handler = (base.enjoyed === 'true' || base.enjoyed === true) ? base.removeLike : base.addLike;
             base.$el.bind("click", _handler);
         };
 
@@ -70,8 +70,10 @@ linkedin: http://br.linkedin.com/in/lazaroflima
                     success: function (data) {
                         base.enjoyed = true;
                         base.likes = data.totallike;
+                        base.changeclickhandler();
                         base.setAppearance();
                         if (base.options.log) console.log("[ajax post success]--> addLike: on " + base.likeid);
+                        if (base.options.log) console.log("[base.enjoyed === 'true']--> " + (base.enjoyed === 'true' || base.enjoyed === true));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         if (base.options.log) console.log("[error]--> addLike: on " + base.likeid + " - textStatus: " + textStatus);
@@ -90,10 +92,12 @@ linkedin: http://br.linkedin.com/in/lazaroflima
                     url: base.options.removelikeurl,
                     data: { likeid: base.likeid },
                     success: function (data) {
-                        base.enjoyed = true;
+                        base.enjoyed = false;
                         base.likes = data.totallike;
+                        base.changeclickhandler();
                         base.setAppearance();
                         if (base.options.log) console.log("[ajax post success]--> addLike: on " + base.likeid);
+                        if (base.options.log) console.log("[base.enjoyed === 'true']--> " + (base.enjoyed === 'true' || base.enjoyed === true));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         if (base.options.log) console.log("[error]--> addLike: on " + base.likeid + " - textStatus: " + textStatus);
