@@ -1,101 +1,117 @@
 /*
-  author: Lazaro Fernandes Lima
-  blog: www.lazarolima.com.br
-  linkedin: http://br.linkedin.com/in/lazaroflima
+author: Lazaro Fernandes Lima
+blog: www.lazarolima.com.br
+linkedin: http://br.linkedin.com/in/lazaroflima
 
 
-  usage:
-  <!--
-  data-likeid:    Defines an unique identifier that represents the like object
-  data-likes:     Number of likes (for a better performance, this attribute does not be omitted)
-  data-enjoyed:   If current user enjoyed the object. Defines the behavior of appearance
-  -->
-  <a class="like" data-likeid="d41d8cd98f00b204e9800998ecf8427e" data-likes="7" data-enjoyed="true"></a>
-  <a class="like" data-likeid="2304" data-likes="1" data-enjoyed="false"></a>
+usage:
+<!--
+data-likeid:    Defines an unique identifier that represents the like object
+data-likes:     Number of likes (for a better performance, this attribute does not be omitted)
+data-enjoyed:   If current user enjoyed the object. Defines the behavior of appearance
+-->
+<a class="like" data-likeid="d41d8cd98f00b204e9800998ecf8427e" data-likes="7" data-enjoyed="true"></a>
+<a class="like" data-likeid="2304" data-likes="1" data-enjoyed="false"></a>
 
-  $(".like").likeJs();
-  //
-  $(".like").likeJs({
-    css: "btn btn-mini",
-    liketext: "I Like S2",
-    unliketext: "not short anymore!",
-    log: true,
-    addlikeurl: "http://www.lazarolima.com.br/like",
-    removelikeurl: "http://www.lazarolima.com.br/dislike"
-  }); 
+$(".like").likeJs();
+//
+$(".like").likeJs({
+css: "btn btn-mini",
+liketext: "I Like S2",
+unliketext: "not short anymore!",
+log: true,
+addlikeurl: "http://www.lazarolima.com.br/like",
+removelikeurl: "http://www.lazarolima.com.br/dislike"
+}); 
 
 */
 
-(function($){
-  $.likeJs = function(el, options){
+(function ($) {
+    $.likeJs = function (el, options) {
         // To avoid scope issues, use 'base' instead of 'this'
         // to reference this class from internal events and functions.
         var base = this;
-        
+
         // Access to jQuery and DOM versions of element
         base.$el = $(el);
         base.el = el;
-        base.likeid = base.$el.attr("data-likeid");
-        base.likes = base.$el.attr("data-likes");
-        base.enjoyed = base.$el.attr("data-enjoyed");
-        
+        base.likeid = base.$el.attr("datalikeid");
+        base.likes = base.$el.attr("datalikes");
+        base.enjoyed = base.$el.attr("dataenjoyed");
+
         // Add a reverse reference to the DOM object
         base.$el.data("likeJs", base);
-        
-        base.init = function(){
-          base.options = $.extend({},$.likeJs.defaultOptions, options);
-          base.setAppearance();
-        };
-        
-        base.setAppearance = function(){
-          base.$el.addClass(base.options.css);
-          base.defineText();
+
+        base.init = function () {
+            base.options = $.extend({}, $.likeJs.defaultOptions, options);
+            if (base.options.log) console.log("[loading]--> base.init on " + base.likeid);
+
+            base.setAppearance();
+            if (base.options.log) console.log("[success]--> base.init on " + base.likeid);
         };
 
-        base.defineText = function(){
-          if(base.likes < 0){
-            if(base.options.log)
-              console.log("[error]--> defineText: 'base.likes' must be greater than zero on " + base.likeid);
-            return;
-          }
-
-          var _liketext = base.enjoyed ? base.options.unliketext : base.options.liketext;
-          base.$el.text(_liketext + " (" + base.likes + ")");
+        base.setAppearance = function () {
+            base.$el.addClass(base.options.css);
+            base.defineText();
+            base.defineHandlers();
         };
 
-        base.addLike = function(element){
-          if(base.options.addlikeurl !== undefined && base.options.addlikeurl != "")
-          {
-            //todo
-          }
-          else if(base.options.log)
-            console.log("[error]--> addLike: 'base.options.addlikeurl' can not be null on " + base.likeid);
+        base.defineText = function () {
+            if (base.likes < 0) {
+                return;
+            }
+
+            var _liketext = base.enjoyed === 'true' ? base.options.unliketext : base.options.liketext;
+            base.$el.text(_liketext + " (" + base.likes + ")");
         };
-        
-        base.removeLike = function(element){
-          if(base.options.removelikeurl !== undefined && base.options.removelikeurl != "" )
-          {
-            //todo
-          }
-          else if(base.options.log)
-            console.log("[error]--> removeLike: 'base.options.removelikeurl' can not be null on " + base.likeid);
+
+        base.defineHandlers = function () {
+            if (base.likes < 0) {
+                return;
+            }
+
+            var _handler = base.enjoyed === 'true' ? base.removeLike : base.addLike;
+            base.$el.bind("click", _handler);
         };
-        
+
+        base.changeclickhandler = function (handler) {
+            base.$el.unbind("click");
+            base.$el.bind("click", handler);
+        }
+
+        base.addLike = function (element) {
+            if (base.options.addlikeurl !== undefined && base.options.addlikeurl != "") {
+                //todo
+                base.changeclickhandler(base.removeLike);
+                if (base.options.log) console.log("[click]--> addLike: on " + base.likeid);
+            }
+            else if (base.options.log) console.log("[error]--> addLike: 'base.options.addlikeurl' can not be null on " + base.likeid);
+        };
+
+        base.removeLike = function (element) {
+            if (base.options.removelikeurl !== undefined && base.options.removelikeurl != "") {
+                //todo
+                base.changeclickhandler(base.addLike);
+                if (base.options.log) console.log("[click]--> removeLike: on " + base.likeid);
+            }
+            else if (base.options.log) console.log("[error]--> removeLike: 'base.options.removelikeurl' can not be null on " + base.likeid);
+        };
+
         // Run initializer
         base.init();
-      };
+    };
 
-      $.likeJs.defaultOptions = {
+    $.likeJs.defaultOptions = {
         css: 'btn btn-mini', // using http://twitter.github.com/bootstrap/
         liketext: 'curtir',
         unliketext: 'desfazer curtir',
         log: true
-      };
+    };
 
-      $.fn.likeJs = function(options){
-        return this.each(function(){
-          (new $.likeJs(this, options));
+    $.fn.likeJs = function (options) {
+        return this.each(function () {
+            (new $.likeJs(this, options));
         });
-      };
+    };
 
-    })(jQuery);
+})(jQuery);
