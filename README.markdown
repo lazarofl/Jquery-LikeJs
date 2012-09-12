@@ -30,15 +30,15 @@ After that, you can initialize the likeJs in all elements using a simple JQuery 
 ```javascript
 //basic options
 $(".like").likeJs({
-	addlikeurl: "http://www.lazarolima.com.br/like",
-	removelikeurl: "http://www.lazarolima.com.br/dislike"
+	addlikeurl: "http://www.lazarolima.com.br/like_fake",
+	removelikeurl: "http://www.lazarolima.com.br/removelike_fake"
 });
 
 
 //full options
 $(".like").likeJs({
-	addlikeurl: "http://www.lazarolima.com.br/like",
-	removelikeurl: "http://www.lazarolima.com.br/dislike",
+	addlikeurl: "http://www.lazarolima.com.br/like_fake",
+	removelikeurl: "http://www.lazarolima.com.br/removelike_fake",
 	css: "btn btn-mini",
 	liketext: "I Like S2",
 	unliketext: "not short anymore!",
@@ -47,7 +47,7 @@ $(".like").likeJs({
 ```
 
 ## Ajax response
-All success request must have a JSON result with contains the 'totallike', like the `http://www.lazarolima.com.br/like` result.
+All success request must have a JSON result with contains the 'totallike', like the `http://www.lazarolima.com.br/like_fake` result.
 ```javascript
 {
 	totallike: 10 //number of current 'likes'
