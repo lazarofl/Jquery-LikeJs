@@ -45,3 +45,12 @@ $(".like").likeJs({
 	log: true
 }); 
 ```
+
+## Ajax response
+Success request must have a JSON result with contains the 'totallike', like as in 'http://www.lazarolima.com.br/like' result
+
+```javascript
+{
+	totallike: 10 //number of current 'likes'
+}
+```
