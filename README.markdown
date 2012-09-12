@@ -47,8 +47,7 @@ $(".like").likeJs({
 ```
 
 ## Ajax response
-Success request must have a JSON result with contains the 'totallike', like as in 'http://www.lazarolima.com.br/like' result
-
+All success request must have a JSON result with contains the 'totallike', like the 'http://www.lazarolima.com.br/like' result.
 ```javascript
 {
 	totallike: 10 //number of current 'likes'
