@@ -117,7 +117,7 @@ linkedin: http://br.linkedin.com/in/lazaroflima
         css: 'btn btn-mini', // using http://twitter.github.com/bootstrap/
         liketext: 'curtir',
         unliketext: 'desfazer curtir',
-        log: true
+        log: false
     };
 
     $.fn.likeJs = function (options) {
