@@ -66,6 +66,7 @@ linkedin: http://br.linkedin.com/in/lazaroflima
                 $.ajax({
                     type: 'POST',
                     url: base.options.addlikeurl,
+                    datatype: "JSON",
                     data: { likeid: base.likeid },
                     success: function (data) {
                         base.enjoyed = true;
@@ -90,6 +91,7 @@ linkedin: http://br.linkedin.com/in/lazaroflima
                 $.ajax({
                     type: 'DELETE',
                     url: base.options.removelikeurl,
+                    datatype: "JSON",
                     data: { likeid: base.likeid },
                     success: function (data) {
                         base.enjoyed = false;
